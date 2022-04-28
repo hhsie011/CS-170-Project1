@@ -57,4 +57,8 @@ if __name__ == "__main__":
     amode = ast.literal_eval(input())
 
     if amode == '1':
-        s.uniform_cost_tree(problem)
+        s.uniform_cost(problem)
+    elif amode == '2':
+        s.astar_misplace_tile(problem)
+    elif amode == '3':
+        s.astar_euclidean_distance(problem)

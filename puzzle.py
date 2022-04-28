@@ -68,6 +68,21 @@ class Puzzle:
             return True
         return False
 
+    # Returns the number of misplaced tiles
+    def find_misplaced_tile(self, tnode : tn.TreeNode) -> int:
+        num_misplaced_tile = 0
+        i = 1
+        for tile in tnode.state:
+            if i == 9:
+                if tile != None:
+                    num_misplaced_tile += 1
+                break
+            if tile != i:
+                num_misplaced_tile += 1
+            i += 1
+        return num_misplaced_tile
+
+
     # Might not be needed
     def swap(self, row1, col1, row2, col2) -> Self:
         if row1 >= self.num_row or row2 >= self.num_row:
