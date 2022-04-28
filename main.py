@@ -1,7 +1,7 @@
 #170 project 1
 import ast
 import puzzle as p
-
+import search as s
 
 
 # Create default puzzle
@@ -57,4 +57,4 @@ if __name__ == "__main__":
     amode = ast.literal_eval(input())
 
     if amode == '1':
-
+        s.uniform_cost_tree(problem)
