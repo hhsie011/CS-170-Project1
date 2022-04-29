@@ -99,16 +99,16 @@ def astar_euclidean_distance(problem : p.Puzzle) -> int:
         num_nodes_expanded += 1
         temp1 = temp2 = temp3 = temp4 = current_node
         if problem.move_blank_left(temp1) == True:
-            h_cost = problem.find_misplaced_tile(temp1)
+            h_cost = problem.find_euclidean_distance(temp1)
             frontier.put((cost + 1 + h_cost, temp1))
         if problem.move_blank_right(temp2) == True:
-            h_cost = problem.find_misplaced_tile(temp2)
+            h_cost = problem.find_euclidean_distance(temp2)
             frontier.put((cost + 1 + h_cost, temp2))
         if problem.move_blank_up(temp3) == True:
-            h_cost = problem.find_misplaced_tile(temp3)
+            h_cost = problem.find_euclidean_distance(temp3)
             frontier.put((cost + 1 + h_cost, temp3))
         if problem.move_blank_down((temp4)) == True:
-            h_cost = problem.find_misplaced_tile(temp4)
+            h_cost = problem.find_euclidean_distance(temp4)
             frontier.put((cost + 1 + h_cost, temp4))
         # update max queue size if needed
         if frontier.qsize() > max_queue_size:

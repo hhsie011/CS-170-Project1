@@ -1,6 +1,7 @@
-from os import ST_NODEV
+import math
 from typing_extensions import Self
 import treenode as tn
+
 
 # Define puzzle class
 class Puzzle:
@@ -11,6 +12,16 @@ class Puzzle:
     blank_col = None
     initial_state = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
     goal_state = [[1, 2, 3], [4, 5, 6], [7, 8, None]]
+    goal_state_map = {
+        '1' : [0, 0],
+        '2' : [0, 1],
+        '3' : [0, 2],
+        '4' : [1, 0],
+        '5' : [1, 1],
+        '6' : [1, 2],
+        '7' : [2, 1],
+        '8' : [2, 2]
+    }
 
     # Default Constructor
     def __init__(self) -> None:
@@ -76,11 +87,29 @@ class Puzzle:
             if i == 9:
                 if tile != None:
                     num_misplaced_tile += 1
-                break
+                    break
             if tile != i:
                 num_misplaced_tile += 1
             i += 1
         return num_misplaced_tile
+
+    # Find Euclidean distance between each tile's current position and its correct position
+    def find_euclidean_distance(self, tnode : tn.TreeNode) -> float:
+        euclidean_distance = 0
+        row = 0
+        col = 0
+        for tile in tnode.state:
+            if tile != None:
+                euclidean_distance += math.sqrt(((row - self.goal_state_map[str(tile)][0]) ** 2) + ((col - \
+                    self.goal_state_map[str(tile)][1])) ** 2)
+            else:
+                euclidean_distance += math.sqrt(((row - self.num_row + 1) ** 2) + ((col - self.num_col + 1) ** 2))
+            if col < self.num_col - 1:
+                col += 1
+            else:
+                col = 0
+                row += 1
+        return euclidean_distance
 
 
     # Might not be needed
