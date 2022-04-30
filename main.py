@@ -7,10 +7,11 @@ import search as s
 # Create default puzzle
 if __name__ == "__main__":
     # Welcome message
-    print("Welcome to 862073206 8 puzzle solver.")
+    print("Welcome to 862073206 8 puzzle solver.\n")
 
     # Ask user how to build puzzle
-    pmode = ast.literal_eval(input("Type \"1\" to use a default puzzle, or \"2\" to enter your own puzzle."))
+    pmode = input("Type \"1\" to use a default puzzle, or \"2\" to enter your own puzzle. ")
+    print('\n')
     
     # Instantitate a puzzle object
     problem = p.Puzzle()
@@ -23,41 +24,46 @@ if __name__ == "__main__":
         print("Enter your puzzle, use a zero to represent the blank")
 
         # Ask user for first row
-        print("Enter the frist row, use space or tabs between numbers", end='')
-        
+        input1, input2, input3 = input("Enter the frist row, use space or tabs between numbers ").split()
+
         # Build first row
-        input1, input2, input3 = int(ast.literal_eval(input.split()))
-        problem.build_custom_table(0, 0, input1)
-        problem.build_custom_table(0, 1, input2)
-        problem.build_custom_table(0, 2, input3)
+        problem.build_custom_table(0, 0, int(input1))
+        problem.build_custom_table(0, 1, int(input2))
+        problem.build_custom_table(0, 2, int(input3))
 
         # Ask user for second row
-        print("Enter the second row, use space or tabs between numbers", end='')
+        input4, input5, input6 = input("Enter the second row, use space or tabs between numbers ").split()
 
         # Build second row
-        input4, input5, input6 = int(ast.literal_eval(input.split()))
-        problem.build_custom_table(1, 0, input4)
-        problem.build_custom_table(1, 1, input5)
-        problem.build_custom_table(1, 2, input6)
+        problem.build_custom_table(1, 0, int(input4))
+        problem.build_custom_table(1, 1, int(input5))
+        problem.build_custom_table(1, 2, int(input6))
 
         # Ask user for third row
-        print("Enter the third row, use space or tabs between numbers", end='')
+        input7, input8, input9 = input("Enter the third row, use space or tabs between numbers ").split()
 
         # Build third row
-        input7, input8, input9 = int(ast.literal_eval(input.split()))
-        problem.build_custom_table(2, 0, input7)
-        problem.build_custom_table(2, 1, input8)
-        problem.build_custom_table(2, 2, input9)
+        problem.build_custom_table(2, 0, int(input7))
+        problem.build_custom_table(2, 1, int(input8))
+        problem.build_custom_table(2, 2, int(input9))
 
     # Select algorithm
-    print("Enter your choice of algorithm")
+    print("\nEnter your choice of algorithm")
     print("1: Uniform Cost Search")
     print("2: A* with the Misplaced Tile heuristic")
     print("3: A* with the Eucledian Distance heuristic")
-    amode = ast.literal_eval(input())
+    amode = input()
+    print('\n')
 
     if amode == '1':
-        s.uniform_cost(problem)
+        solution_found, num_nodes_expanded, max_queue_size, solution_cost = s.uniform_cost(problem)
+        if solution_found == 1:
+            print("We found a solution!!!")
+        else:
+            print("We did not find a solution :(")
+        print("We expanded ", num_nodes_expanded, " nodes")
+        print("The maximum queue size was ", max_queue_size)
+        print("The solution had a cost of ", solution_cost)
     elif amode == '2':
         s.astar_misplace_tile(problem)
     elif amode == '3':

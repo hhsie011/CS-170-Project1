@@ -1,7 +1,6 @@
 import math
-from typing_extensions import Self
 import treenode as tn
-
+import copy
 
 # Define puzzle class
 class Puzzle:
@@ -35,49 +34,82 @@ class Puzzle:
         return
 
     # Build puzzle table using user input
-    def build_custom_table(self, row, col, val) -> None:
+    def build_custom_table(self, row : int, col : int, val : int) -> None:
         if row < self.num_row and col < self.num_col:
-            if val == None:
+            if val == 0:
                 self.blank_row = row
                 self.blank_col = col
-            self.initial_state[row][col] = val
+                self.initial_state[row][col] = None
+            else:
+                self.initial_state[row][col] = val
         return
+
+    # Goal test
+    def goal_test(self, tnode : tn.TreeNode) -> bool:
+        for gs, s in zip(self.goal_state, tnode.state):
+            if (gs != s):
+                return False
+        return True
     
     # Operator 1
-    def move_blank_left(self, tnode : tn.TreeNode) -> bool:
-        if tnode.blank_col > 0:
-            tnode.state[tnode.blank_row][tnode.blank_col], tnode.state[tnode.blank_row][tnode.blank_col-1] = \
-                tnode.state[tnode.blank_row][tnode.blank_col-1], tnode.state[tnode.blank_row][tnode.blank_col]
-            tnode.blank_col -= 1
-            return True
-        return False
+    def move_blank_left(self, tnode : tn.TreeNode) -> tn.TreeNode:
+        temp = tn.TreeNode(tnode.state, tnode.blank_row, tnode.blank_col)
+        temp.state[temp.blank_row][temp.blank_col] = temp.state[temp.blank_row][temp.blank_col - 1]
+        temp.state[temp.blank_row][temp.blank_col - 1] = None
+        temp.blank_col -= 1
+        return temp
 
     # Operator 2
-    def move_blank_right(self, tnode : tn.TreeNode) -> bool:
-        if tnode.blank_col < self.num_col - 1:
-            tnode.state[tnode.blank_row][tnode.blank_col], tnode.state[tnode.blank_row][tnode.blank_col+1] = \
-                tnode.state[tnode.blank_row][tnode.blank_col+1], tnode.state[tnode.blank_row][tnode.blank_col]
-            tnode.blank_col += 1
-            return True
-        return False
+    def move_blank_right(self, tnode : tn.TreeNode) -> tn.TreeNode:
+        temp = tn.TreeNode(tnode.state, tnode.blank_row, tnode.blank_col)
+        temp.state[temp.blank_row][temp.blank_col] = temp.state[temp.blank_row][temp.blank_col + 1]
+        temp.state[temp.blank_row][temp.blank_col + 1] = None
+        temp.blank_col += 1
+        return temp
     
     # Operator 3
-    def move_blank_up(self, tnode : tn.TreeNode) -> bool:
-        if tnode.blank_row > 0:
-            tnode.state[tnode.blank_row][tnode.blank_col], tnode.state[tnode.blank_row-1][tnode.blank_col] = \
-                tnode.state[tnode.blank_row-1][tnode.blank_col], tnode.state[tnode.blank_row][tnode.blank_col]
-            tnode.blank_row -= 1
-            return True
-        return False
+    def move_blank_up(self, tnode : tn.TreeNode) -> tn.TreeNode:
+        temp = tn.TreeNode(tnode.state, tnode.blank_row, tnode.blank_col)
+        temp.state[temp.blank_row][temp.blank_col] = temp.state[temp.blank_row - 1][temp.blank_col]
+        temp.state[temp.blank_row - 1][temp.blank_col] = None
+        temp.blank_row -= 1
+        return temp
 
     # Operator 4
-    def move_blank_down(self, tnode : tn.TreeNode) -> bool:
-        if tnode.blank_row < self.num_row - 1:
-            tnode.state[tnode.blank_row][tnode.blank_col], tnode.state[tnode.blank_row+1][tnode.blank_col] = \
-                tnode.state[tnode.blank_row+1][tnode.blank_col], tnode.state[tnode.blank_row][tnode.blank_col]
-            tnode.blank_row += 1
+    def move_blank_down(self, tnode : tn.TreeNode) -> tn.TreeNode:
+        temp = tn.TreeNode(tnode.state, tnode.blank_row, tnode.blank_col)
+        temp.state[temp.blank_row][temp.blank_col] = temp.state[temp.blank_row + 1][temp.blank_col]
+        temp.state[temp.blank_row + 1][temp.blank_col] = None
+        temp.blank_row += 1
+        return temp
+
+    # CHhck if we can move the blank tile left
+    def check_blank_left(self, tnode : tn.TreeNode) -> bool:
+        if tnode.blank_col > 0:
             return True
-        return False
+        else:
+            return False
+    
+    # Check if we can move the blank tile right
+    def check_blank_right(self, tnode : tn.TreeNode) -> bool:
+        if tnode.blank_col < self.num_col - 1:
+            return True
+        else:
+            return False
+
+    # Check if we can move the blank tile up
+    def check_blank_up(self, tnode : tn.TreeNode) -> bool:
+        if tnode.blank_row > 0:
+            return True
+        else:
+            return False
+
+    # Check if we can move the blank tile down
+    def check_blank_down(self, tnode : tn.TreeNode) -> bool:
+        if tnode.blank_row < self.num_row - 1:
+            return True
+        else:
+            return False
 
     # Returns the number of misplaced tiles
     def find_misplaced_tile(self, tnode : tn.TreeNode) -> int:
@@ -112,11 +144,3 @@ class Puzzle:
         return euclidean_distance
 
 
-    # Might not be needed
-    def swap(self, row1, col1, row2, col2) -> Self:
-        if row1 >= self.num_row or row2 >= self.num_row:
-            return
-        if col1 >= self.num_col or row2 >= self.num_col:
-            return
-        self.current_state[row1][col1], self.current_state[row2][col2] = self.current_state[row2][col2], self.current_state[row1][col1]
-        return
