@@ -125,16 +125,17 @@ class Puzzle:
         row = 0
         col = 0
         for tile in tnode.state:
-            if tile != None:
-                euclidean_distance += math.sqrt(((row - self.goal_state_map[str(tile)][0]) ** 2) + ((col - \
-                    self.goal_state_map[str(tile)][1])) ** 2)
-            else:
-                euclidean_distance += math.sqrt(((row - self.num_row + 1) ** 2) + ((col - self.num_col + 1) ** 2))
-            if col < self.num_col - 1:
-                col += 1
-            else:
-                col = 0
-                row += 1
+            for element in tile:
+                if element != None:
+                    euclidean_distance += math.sqrt(((row - self.goal_state_map[str(element)][0]) ** 2) + ((col - \
+                        self.goal_state_map[str(element)][1])) ** 2)
+                else:
+                    euclidean_distance += math.sqrt(((row - self.num_row + 1) ** 2) + ((col - self.num_col + 1) ** 2))
+                if col < self.num_col - 1:
+                    col += 1
+                else:
+                    col = 0
+                    row += 1
         return euclidean_distance
 
     # Create key for storage
