@@ -58,13 +58,20 @@ if __name__ == "__main__":
     if amode == '1':
         solution_found, num_nodes_expanded, max_queue_size, solution_cost = s.uniform_cost(problem)
         if solution_found == 1:
-            print("We found a solution!!!")
+            print("Goal!!!")
         else:
-            print("We did not find a solution :(")
-        print("We expanded ", num_nodes_expanded, " nodes")
-        print("The maximum queue size was ", max_queue_size)
-        print("The solution had a cost of ", solution_cost)
+            print("No goal :(")
+        print("To solve this problem the search algorithm expanded a total of ", num_nodes_expanded, " nodes.")
+        print("The maximum number of nodes in the queue at any one time: ", max_queue_size)
+        print("The depth of the goal node was ", solution_cost)
     elif amode == '2':
-        s.astar_misplace_tile(problem)
+        solution_found, num_nodes_expanded, max_queue_size, solution_cost = s.astar_misplace_tile(problem)
+        if solution_found == 1:
+            print("Goal!!!")
+        else:
+            print("No goal :(")
+        print("To solve this problem the search algorithm expanded a total of ", num_nodes_expanded, " nodes.")
+        print("The maximum number of nodes in the queue at any one time: ", max_queue_size)
+        print("The depth of the goal node was ", solution_cost)
     elif amode == '3':
         s.astar_euclidean_distance(problem)

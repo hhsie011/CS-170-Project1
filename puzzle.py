@@ -114,15 +114,9 @@ class Puzzle:
     # Returns the number of misplaced tiles
     def find_misplaced_tile(self, tnode : tn.TreeNode) -> int:
         num_misplaced_tile = 0
-        i = 1
-        for tile in tnode.state:
-            if i == 9:
-                if tile != None:
-                    num_misplaced_tile += 1
-                    break
-            if tile != i:
+        for gs, s in zip(self.goal_state, tnode.state):
+            if (gs != s):
                 num_misplaced_tile += 1
-            i += 1
         return num_misplaced_tile
 
     # Find Euclidean distance between each tile's current position and its correct position
@@ -143,4 +137,13 @@ class Puzzle:
                 row += 1
         return euclidean_distance
 
+    # Create key for storage
+    def make_key(self, tnode : tn.TreeNode) -> str:
+        key = ''
+        for tile in tnode.state:
+            if tile != None:
+                key += str(tile)
+            else:
+                key += '0'
+        return key
 
